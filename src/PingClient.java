@@ -1,28 +1,25 @@
+import javax.xml.crypto.Data;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 
+/**
+ * PingClient
+ */
 public class PingClient {
-
     /** Socket which we use. */
-
     DatagramSocket socket;
 
     /** Maximum length of a ping message. */
-
     static final int MAX_PING_LEN = 512;
 
     /** Create a datagram socket with random port for sending UDP messages */
-
     public void createSocket() {
-
         try {
-
-            socket = . . . ;
-
+            socket = new DatagramSocket(null);
         } catch (SocketException e) {
-
             System.out.println("Error creating socket: " + e);
-
         }
 
     }
@@ -35,7 +32,7 @@ public class PingClient {
 
         try {
 
-            socket = . . . ;
+            socket = new DatagramSocket(port);
 
         } catch (SocketException e) {
 
@@ -47,24 +44,18 @@ public class PingClient {
 
     /** Send a UDP ping message which is given as the argument. */
 
-    public void sendPing(Message ping) {
-
-        InetAddress host = . . . ;
-
-        int port = . . . ;
-
-        String message = . . . ;
+    public void sendPing(Message ping) throws UnknownHostException {
+        InetAddress host = socket.getInetAddress() ;
+        int port = socket.getPort();
+        String message = ping.toString();
 
         try {
 
             /* Create a datagram packet addressed to the recipient */
-
-            DatagramPacket packet = . . . ;
+            DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(),host,port);
 
             /* Send the packet */
-
             socket.send(packet);
-
             System.out.println("Sent message to " + host + ":" + port);
 
         } catch (IOException e) {
@@ -85,9 +76,9 @@ public class PingClient {
 
         /* Create packet for receiving the reply */
 
-        byte recvBuf[] = new byte[MAX_PING_LEN];
+        byte[] recvBuf = new byte[MAX_PING_LEN];
 
-        DatagramPacket recvPacket = . . . ;
+        DatagramPacket recvPacket = new DatagramPacket(recvBuf, recvBuf.length) ;
 
         Message reply = null;
 
@@ -107,7 +98,7 @@ public class PingClient {
 
             System.out.println(recvMsg.trim());
 
-            reply = . . . ;
+            reply = receivePing();
 
         } catch (SocketTimeoutException e) {
 
@@ -123,5 +114,4 @@ public class PingClient {
 
     }
 
-
-}
+    }

@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -10,33 +11,33 @@ import java.net.InetAddress;
  * @version 1.0
  *
  */
-public class Main {
+public class UDPServer {
+
     /**
-     * Main method
-     * @param args port number passed from user via command line
-     *
+     * Read command line arguments and start the client.
+     * @param args host and port
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
+        String host = null;
         int port = 0;
 
         // Parse port number from command line
         try {
-
-            port = Integer.parseInt(args[0]);
+            host = args[0];
+            port = Integer.parseInt(args[1]);
 
         } catch (ArrayIndexOutOfBoundsException e) {
-
             System.out.println("Need one argument: port number.");
-
             System.exit(-1);
-
         } catch (NumberFormatException e) {
-
             System.out.println("Please give port number as integer.");
-
             System.exit(-1);
-
         }
+        System.out.println("Contacting host " + host + " at port " + port);
+
+        UDPClient Client = new UDPClient(host, port);
+
+       Client.run();
 
         // Next, we create a new socket using the DatagramSocket class.
         // Create a new datagram socket at the port **/
@@ -74,9 +75,6 @@ public class Main {
 
         // Send the packet **/
         serverSocket.send(sendPacket);
-
     }
-
-
 
 }

@@ -1,5 +1,4 @@
 import java.net.InetAddress;
-
 /**
  * Message.java
  *
