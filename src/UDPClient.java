@@ -120,9 +120,6 @@ public class UDPClient {
         replies[pingNumber] = true;
 
         /* Calculate RTT and store it in the rtt-array. */
-
-
-
         numReplies++;
 
     }
