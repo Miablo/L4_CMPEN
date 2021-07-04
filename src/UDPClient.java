@@ -32,7 +32,6 @@ public class UDPClient {
 
     /** constructor **/
     public UDPClient(String host, int port) {
-
         host = this.remoteHost;
         port = this.remotePort;
 

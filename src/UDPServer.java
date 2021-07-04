@@ -12,7 +12,6 @@ import java.net.InetAddress;
  *
  */
 public class UDPServer {
-
     /**
      * Read command line arguments and start the client.
      * @param args host and port
