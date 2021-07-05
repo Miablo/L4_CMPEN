@@ -17,11 +17,9 @@ public class UDPServer {
      * @param args host and port
      */
     public static void main(String[] args) throws IOException {
-        String host = null;
         int port=0;
 
         try {
-            host = args[0];
             port = Integer.parseInt(args[1]);
 
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -31,10 +29,6 @@ public class UDPServer {
             System.out.println("Please give port number as integer.");
             System.exit(-1);
         }
-        System.out.println("Contacting host " + host + " at port " + port);
-
-        UDPClient Client = new UDPClient(host, port);
-        Client.run();
 
         // Next, we create a new socket using the DatagramSocket class.
         // Create a new datagram socket at the port **/
@@ -45,25 +39,29 @@ public class UDPServer {
         // Let the user know the server is running
         System.out.println("The UDP server is listening on port " + port);
 
-        // Create a new datagram packet and let the socket receive it
-        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        serverSocket.receive(receivePacket);
+        while(true) {
 
-        // Print the message received
-        String sentence = new String(receivePacket.getData());
-        if (!sentence.equals("")) {
-            System.out.println(sentence.trim());
+            // Create a new datagram packet and let the socket receive it
+            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+            serverSocket.receive(receivePacket);
+
+            // Print the message received
+            String sentence = new String(receivePacket.getData());
+            if (!sentence.equals("")) {
+                System.out.println(sentence.trim());
+            }
+
+            // Get the IP Address of the Sender **/
+            InetAddress IPAddress = receivePacket.getAddress();
+            // Get the port of the Sender **/
+            int senderPort = receivePacket.getPort();
+            // Prepare the data to send back **/
+            sendData = receivePacket.getData();
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, senderPort);
+            // Send the packet **/
+            serverSocket.send(sendPacket);
+
         }
-
-        // Get the IP Address of the Sender **/
-        InetAddress IPAddress = InetAddress.getByName(host);
-        // Get the port of the Sender **/
-        int senderPort = receivePacket.getPort();
-        // Prepare the data to send back **/
-        sendData = receivePacket.getData();
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, senderPort);
-        // Send the packet **/
-        serverSocket.send(sendPacket);
     }
 
 }
