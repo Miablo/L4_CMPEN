@@ -7,7 +7,7 @@ import java.net.InetAddress;
  *
  * CMPEN Lab 4 UDP Ping Server
  *
- * @author Mio Diaz
+ * @author Mio Diaz && Lab manual provided
  * @version 1.0
  *
  */
